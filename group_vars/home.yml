@@ -1,0 +1,4 @@
+---
+luks_keyfile: home_keyfile
+user_name: lx
+user_password: '$6$tynlsnLnXa3koHai$gvOBBK6.cdCg01roOCPwjwNzzIVGzZjbOgKo6T1UdpkTL0tyEX2HBZuYaeBPXAK6xMJT18u.i1HoDpUK.Io7f1'
