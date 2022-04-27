@@ -1,0 +1,59 @@
+---
+- name: Check if .zshrc exists on user home folder
+  stat:
+    path: '/home/{{ user_name }}/.zshrc'
+  register: zsh_file_check
+  tags:
+    - zsh
+
+- name: Copy .zshrc to home folder
+  copy:
+    remote_src: yes
+    src: /usr/share/oh-my-zsh/zshrc
+    dest: /home/{{ user_name }}/.zshrc
+    owner: '{{ user_name }}'
+    group: '{{ user_name }}'
+    mode: 0644
+  become: yes
+  become_user: '{{ user_name }}'
+  when: not zsh_file_check.stat.exists
+  tags:
+    - zsh
+
+- name: Create zsh shell aliases
+  lineinfile: dest=/home/{{ user_name }}/.zshrc regexp='{{ item }}' insertafter='EOF' line='{{ item }}' owner='{{ user_name }}' state=present
+  with_items: "{{ shell_aliases }}"
+  become_user: '{{ user_name }}'
+  become: yes
+  tags:
+    - zsh
+
+- name: Add zsh plugins
+  replace:
+    path: /home/{{ user_name }}/.zshrc
+    regexp: 'plugins=(git)'
+    replace: 'plugins=(git git-extras git-prompt dotenv docker-compose docker colored-man-pages archlinux)'
+    backup: yes
+  become_user: '{{ user_name }}'
+  become: yes
+  tags:
+    - zsh
+
+- name: Change zsh shell theme from 'robbyrussell' to 'agnoster'
+  replace:
+    path: /home/{{ user_name }}/.zshrc
+    regexp: 'ZSH_THEME="robbyrussell"'
+    replace: 'ZSH_THEME="agnoster"'
+    backup: yes
+  become_user: '{{ user_name }}'
+  become: yes
+  tags:
+    - zsh
+
+- name: Set zsh as default shell
+  user:
+    name: "{{ user_name }}"
+    shell: /usr/bin/zsh
+  become: true
+  tags:
+    - zsh

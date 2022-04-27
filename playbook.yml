@@ -1,0 +1,5 @@
+---
+- name: setup arch linux for developers
+  hosts: localhost
+  roles:
+  - { role: base,   tags: ['base'] }

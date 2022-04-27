@@ -1,6 +1,0 @@
----
-all:
-  children:
-    home:
-      hosts:
-        lona:

@@ -1,7 +1,66 @@
----
-ansible_user: root
-ansible_ssh_pass: test123
-install_drive: /dev/sda
-wired_interface: enp1s0
-boot_partition_suffix: '1'
-root_partition_suffix: '2'
+utils:
+    - base-devel
+    - binutils
+    - gcc
+    - htop
+    - keychain
+    - libcurl-gnutls
+    - make
+    - mlocate
+    - python-pip
+    - tree
+    - wget
+    - audacity
+    - firefox
+    - ansible
+    - ansible-lint
+    - docker
+    - docker-compose
+    - go
+    - go-tools
+    - go-yq
+    - jdk8-openjdk
+    - jdk11-openjdk
+    - jre8-openjdk-headless
+    - jre8-openjdk
+    - jre11-openjdk-headless
+    - jre11-openjdk
+    - kubectl
+    - kubectx
+    - minikube
+    - npm
+    - nodejs
+    - ruby
+    - terraform
+    - yarn
+    - vim
+    - gimp
+    - vagrant
+    - virtualbox
+    - zsh
+    - zsh-completions
+
+utils_aur:
+    - yay-git
+    - chromedriver
+    - google-chrome
+    # - visual-studio-code-bin
+    - git-extras
+    - mkpasswd
+    - plugin-autenticacao-gov-pt
+    - zsh-git-prompt
+    - slack-desktop
+
+shell_aliases:
+    - alias ll='ls -lrt'
+    - alias vi=vim
+
+zsh_plugins:
+    - archlinux
+    - colored-man-pages
+    - docker
+    - docker-compose
+    - dotenv
+    - git-prompt
+    - git-extras
+

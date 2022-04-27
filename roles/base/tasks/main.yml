@@ -1,0 +1,70 @@
+---
+- name: update cache and upgrade
+  pacman:
+    update_cache: yes
+    upgrade: yes
+    upgrade_extra_args: "--noconfirm"
+  become: yes
+  tags:
+    - pre
+
+- name: Create the `aur_builder` user
+  become: yes
+  ansible.builtin.user:
+    name: aur_builder
+    create_home: yes
+    group: wheel
+
+- name: Allow the `aur_builder` user to run `sudo pacman` without a password
+  become: yes
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/11-install-aur_builder
+    line: 'aur_builder ALL=(ALL) NOPASSWD: /usr/bin/pacman'
+    create: yes
+    validate: 'visudo -cf %s'
+
+- name: install utils
+  pacman:
+    name: '{{ utils }}'
+    state: present
+  become: yes
+  tags:
+    - utils
+    - base
+
+- name: install utils from aur
+  kewlfft.aur.aur:
+    name: '{{ utils_aur }}'
+    use: makepkg
+    state: present
+  become: yes
+  become_user: aur_builder
+  tags:
+    - utils
+    - base
+
+- name: Create a user profile
+  user:
+    name: lx
+    password: '$6$8BGSNb.28ogaDXRU$LXvar8PzTMKJ6PrYXLEGZvZfvNFSNErSXMp4JTCpP3w9VhjxVHCfNAQrfStZoRXWKc8Dk2QmIgu7VsAphSrtg0'
+    groups:
+     - docker
+     - network
+     - scanner
+     - power
+     - video
+     - storage
+     - wheel
+    state: present
+    shell: /bin/zsh
+    system: no
+    createhome: yes
+    home: /home/lx
+  become: yes
+
+- include: shell.yml
+
+
+
+
+
